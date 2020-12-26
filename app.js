@@ -15,7 +15,20 @@ const articlesRoute = require('./routes/articles');
 const NotFoundError = require('./errors/not-found-error');
 const { loginUser, createUser } = require('./controllers/users');
 
+const dotenv = require('dotenv');
+dotenv.config({ path: "./vars.env" });
+
 const app = express();
+
+const server = app.listen(3000, () => {
+  console.log('Сервер использует 3000 порт');
+});
+
+if(process.env.NODE_ENV === 'production') {
+  server.close(() => {
+    throw new Error('Вы не можете запустить dev скрипт в продакшене');
+  });
+}
 
 mongoose.connect('mongodb://localhost:27017/diploma', {
   useNewUrlParser: true,
@@ -68,8 +81,4 @@ app.use((err, req, res, next) => {
         : message,
     });
   next();
-});
-
-app.listen(3000, () => {
-  console.log('Сервер использует 3000 порт');
 });

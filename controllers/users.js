@@ -10,7 +10,7 @@ module.exports.getUserInfo = (req, res, next) => {
   const token = authorization.replace('Bearer ', '');
   let payload;
   try {
-    payload = jwt.verify(token, 'super-strong-secret');
+    payload = jwt.verify(token, process.env.JWT_SECRET);
   } catch (err) {
     next(new IncorrectData('Необходима авторизация'));
   }
@@ -34,7 +34,7 @@ module.exports.loginUser = (req, res, next) => {
         throw new IncorrectData('Проверьте правильность введенных данных');
       }
 
-      const token = jwt.sign({ _id: user._id }, 'super-strong-secret');
+      const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
       res.send({ token });
     })
     .catch(next);
