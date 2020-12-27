@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validatorLib = require('validator');
+const { linkIncorrect } = require('../utils/constants');
 
 const articleSchema = new mongoose.Schema({
   keyword: {
@@ -33,7 +34,7 @@ const articleSchema = new mongoose.Schema({
       validator(string) {
         return validatorLib.matches(string, /^https?:\/\/w?w?w?\w/g);
       },
-      message: 'Ошибка валидации ссылки',
+      message: linkIncorrect,
     },
   },
   image: {
@@ -43,7 +44,7 @@ const articleSchema = new mongoose.Schema({
       validator(string) {
         return validatorLib.matches(string, /^https?:\/\/w?w?w?\w/g);
       },
-      message: 'Ошибка валидации ссылки',
+      message: linkIncorrect,
     },
   },
   owner: {

@@ -1,8 +1,14 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const validatorLib = require('validator');
 const User = require('../models/user');
 const IncorrectData = require('../errors/incorrect-data-error');
 const NotFoundError = require('../errors/not-found-error');
+const NotAuthorized = require('../errors/not-authorized');
+const { userAlreadyRegistered } = require('../utils/constants');
+const { dataIncorrect } = require('../utils/constants');
+const { notFoundUser } = require('../utils/constants');
+const { notAuthorized } = require('../utils/constants');
 
 module.exports.getUserInfo = (req, res, next) => {
   const { authorization } = req.headers;
@@ -10,15 +16,15 @@ module.exports.getUserInfo = (req, res, next) => {
   const token = authorization.replace('Bearer ', '');
   let payload;
   try {
-    payload = jwt.verify(token, process.env.JWT_SECRET);
+    payload = jwt.verify(token, process.env.JWT_SECRET ? process.env.JWT_SECRET : 'super_strong_secret');
   } catch (err) {
-    next(new IncorrectData('Необходима авторизация'));
+    next(new NotAuthorized(notAuthorized));
   }
 
   User.findById(payload._id)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Пользователь не найден');
+        throw new NotFoundError(notFoundUser);
       }
       res.send(user);
     })
@@ -31,10 +37,10 @@ module.exports.loginUser = (req, res, next) => {
   return User.findUserByCredentials(email, password)
     .then((user) => {
       if (!user) {
-        throw new IncorrectData('Проверьте правильность введенных данных');
+        throw new NotAuthorized(dataIncorrect);
       }
 
-      const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+      const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET ? process.env.JWT_SECRET : 'super_strong_secret');
       res.send({ token });
     })
     .catch(next);
@@ -45,10 +51,14 @@ module.exports.createUser = (req, res, next) => {
     email, password, name,
   } = req.body;
 
+  if (validatorLib.contains(password, '')) {
+    throw new IncorrectData(dataIncorrect);
+  }
+
   User.findOne({ email })
     .then((user) => {
       if (user) {
-        res.status(409).send({ message: 'Данный пользователь уже зарегистрирован' });
+        res.status(409).send({ message: userAlreadyRegistered });
       }
     })
     .catch(next);
@@ -58,7 +68,7 @@ module.exports.createUser = (req, res, next) => {
       email, password: hashedPassword, name,
     }))
     .then(() => {
-      res.status(200).send();
+      res.status(200).send({});
     })
     .catch(next);
 };

@@ -1,0 +1,12 @@
+module.exports.incorrectData = 'Переданы некорректные данные';
+module.exports.notAuthorized = 'Необходима авторизация';
+module.exports.notFoundCard = 'Запрашиваемая карточка не найдена';
+module.exports.notFoundUser = 'Запрашиваемая карточка не найдена';
+module.exports.notFoundPage = 'Запрашиваемый ресурс не найден';
+module.exports.canNotDeleteCard = 'Вы не можете удалить карточку другого пользователя';
+module.exports.dataIncorrect = 'Проверьте правильность введенных данных';
+module.exports.userAlreadyRegistered = 'Данный пользователь уже зарегистрирован';
+module.exports.serverError = 'На сервере произошла ошибка';
+module.exports.tooManyRequests = 'Вы отправили очень много запросов с одного IP адреса.';
+module.exports.linkIncorrect = 'Ошибка валидации ссылки';
+module.exports.emailIncorrect = 'Ошибка валидации Email';

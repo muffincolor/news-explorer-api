@@ -3,6 +3,11 @@ const Article = require('../models/article');
 const IncorrectData = require('../errors/incorrect-data-error');
 const NotFoundError = require('../errors/not-found-error');
 const Forbidden = require('../errors/forbiden-error');
+const NotAuthorized = require('../errors/not-authorized');
+const { notFoundCard } = require('../utils/constants');
+const { canNotDeleteCard } = require('../utils/constants');
+const { notAuthorized } = require('../utils/constants');
+const { incorrectData } = require('../utils/constants');
 
 module.exports.getArticles = (req, res, next) => {
   Article.find({})
@@ -22,7 +27,7 @@ module.exports.createArticle = (req, res, next) => {
   })
     .then((cards) => {
       if (!cards) {
-        throw new IncorrectData('Переданы некорректные данные');
+        throw new IncorrectData(incorrectData);
       }
 
       res.send(cards);
@@ -37,17 +42,17 @@ module.exports.deleteArticle = (req, res, next) => {
   const token = authorization.replace('Bearer ', '');
   let payload;
   try {
-    payload = jwt.verify(token, process.env.JWT_SECRET);
+    payload = jwt.verify(token, process.env.JWT_SECRET ? process.env.JWT_SECRET : 'super_strong_secret');
   } catch (err) {
-    next(new IncorrectData('Необходима авторизация'));
+    next(new NotAuthorized(notAuthorized));
   }
 
   Article.findById(articleId)
     .then((article) => {
       if (!article) {
-        throw new NotFoundError('Запрашиваемая карточка не найдена');
+        throw new NotFoundError(notFoundCard);
       } else if (article.owner.toString() !== payload._id.toString()) {
-        throw new Forbidden('Вы не можете удалить карточку другого пользователя');
+        throw new Forbidden(canNotDeleteCard);
       }
       Article.findByIdAndRemove(articleId)
         .then((removeCard) => {
