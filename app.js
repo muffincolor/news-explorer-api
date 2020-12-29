@@ -3,12 +3,11 @@ const {
   Joi,
 } = require('celebrate');
 
-const { DB, SERVER_PORT } = require('./utils/constants');
 const { errors } = require('celebrate');
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+const { DB, SERVER_PORT } = require('./utils/constants');
 const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const mainRoute = require('./routes/index');

@@ -8,6 +8,7 @@ const { notFoundCard } = require('../utils/constants');
 const { canNotDeleteCard } = require('../utils/constants');
 const { notAuthorized } = require('../utils/constants');
 const { incorrectData } = require('../utils/constants');
+const { JWT_SECRET } = require('../utils/constants');
 
 module.exports.getArticles = (req, res, next) => {
   Article.find({})
@@ -33,10 +34,10 @@ module.exports.createArticle = (req, res, next) => {
       res.send(cards);
     })
     .catch((error) => {
-        if (error.name === 'ValidationError') {
-            next(new IncorrectData('Переданы некорректные данные'));
-        }
-        next();
+      if (error.name === 'ValidationError') {
+        next(new IncorrectData(incorrectData));
+      }
+      next();
     });
 };
 

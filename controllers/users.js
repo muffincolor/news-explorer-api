@@ -9,6 +9,7 @@ const { userAlreadyRegistered } = require('../utils/constants');
 const { dataIncorrect } = require('../utils/constants');
 const { notFoundUser } = require('../utils/constants');
 const { notAuthorized } = require('../utils/constants');
+const { JWT_SECRET } = require('../utils/constants');
 
 module.exports.getUserInfo = (req, res, next) => {
   const { authorization } = req.headers;

@@ -1,7 +1,7 @@
 require('dotenv').config({ path: './vars.env' });
 
 const {
-    NODE_ENV, JWT_SECRET, DB_LINK, PORT,
+  NODE_ENV, JWT_SECRET, DATABASE_ADRESS, PORT,
 } = process.env;
 
 const devSecret = 'dev-secret';
@@ -9,7 +9,7 @@ const devDbLink = 'mongodb://localhost:27017/diploma';
 const devServerPort = 3000;
 
 const SECRET = NODE_ENV === 'production' && JWT_SECRET ? JWT_SECRET : devSecret;
-const DB = NODE_ENV === 'production' && DB_LINK ? DB_LINK : devDbLink;
+const DB = NODE_ENV === 'production' && DATABASE_ADRESS ? DATABASE_ADRESS : devDbLink;
 const SERVER_PORT = NODE_ENV === 'production' && PORT ? PORT : devServerPort;
 
 module.exports.incorrectData = 'Переданы некорректные данные';
@@ -26,7 +26,7 @@ module.exports.linkIncorrect = 'Ошибка валидации ссылки';
 module.exports.emailIncorrect = 'Ошибка валидации Email';
 
 module.exports = {
-    SECRET,
-    DB,
-    SERVER_PORT,
+  SECRET,
+  DB,
+  SERVER_PORT,
 };
