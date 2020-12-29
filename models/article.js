@@ -32,7 +32,7 @@ const articleSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(string) {
-        return validatorLib.matches(string, /^https?:\/\/w?w?w?\w/g);
+        return validatorLib.isURL(string) && validatorLib.matches(string, /^https?:\/\/w?w?w?\w/g);
       },
       message: linkIncorrect,
     },
@@ -42,7 +42,7 @@ const articleSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(string) {
-        return validatorLib.matches(string, /^https?:\/\/w?w?w?\w/g);
+        return validatorLib.isURL(string) && validatorLib.matches(string, /^https?:\/\/w?w?w?\w/g);
       },
       message: linkIncorrect,
     },

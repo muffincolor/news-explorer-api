@@ -51,7 +51,7 @@ module.exports.createUser = (req, res, next) => {
     email, password, name,
   } = req.body;
 
-  if (validatorLib.contains(password, '')) {
+  if (validatorLib.contains(password, ' ')) {
     throw new IncorrectData(dataIncorrect);
   }
 
