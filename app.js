@@ -2,6 +2,8 @@ const {
   celebrate,
   Joi,
 } = require('celebrate');
+
+const { DB, SERVER_PORT } = require('./utils/constants');
 const { errors } = require('celebrate');
 const express = require('express');
 const cors = require('cors');
@@ -16,13 +18,11 @@ const { notFoundPage } = require('./utils/constants');
 const { handleServerError } = require('./errors/server-error');
 const { loginUser, createUser } = require('./controllers/users');
 
-dotenv.config({ path: './vars.env' });
-
 const app = express();
 
-app.listen(3000);
+app.listen(SERVER_PORT);
 
-mongoose.connect(process.env.DATABASE_ADRESS ? process.env.DATABASE_ADRESS : 'mongodb://localhost:27017/diploma', {
+mongoose.connect(DB, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,

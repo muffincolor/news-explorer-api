@@ -16,7 +16,7 @@ module.exports.getUserInfo = (req, res, next) => {
   const token = authorization.replace('Bearer ', '');
   let payload;
   try {
-    payload = jwt.verify(token, process.env.JWT_SECRET ? process.env.JWT_SECRET : 'super_strong_secret');
+    payload = jwt.verify(token, JWT_SECRET);
   } catch (err) {
     next(new NotAuthorized(notAuthorized));
   }
@@ -40,7 +40,7 @@ module.exports.loginUser = (req, res, next) => {
         throw new NotAuthorized(dataIncorrect);
       }
 
-      const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET ? process.env.JWT_SECRET : 'super_strong_secret');
+      const token = jwt.sign({ _id: user._id }, JWT_SECRET);
       res.send({ token });
     })
     .catch(next);

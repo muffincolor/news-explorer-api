@@ -18,7 +18,7 @@ module.exports = (req, res, next) => {
   let payload;
 
   try {
-    payload = jwt.verify(token, process.env.JWT_SECRET ? process.env.JWT_SECRET : 'super_strong_secret');
+    payload = jwt.verify(token, JWT_SECRET);
   } catch (err) {
     next(new NotAuthorized(notAuthorized));
   }

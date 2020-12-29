@@ -32,7 +32,12 @@ module.exports.createArticle = (req, res, next) => {
 
       res.send(cards);
     })
-    .catch(next);
+    .catch((error) => {
+        if (error.name === 'ValidationError') {
+            next(new IncorrectData('Переданы некорректные данные'));
+        }
+        next();
+    });
 };
 
 module.exports.deleteArticle = (req, res, next) => {
@@ -42,7 +47,7 @@ module.exports.deleteArticle = (req, res, next) => {
   const token = authorization.replace('Bearer ', '');
   let payload;
   try {
-    payload = jwt.verify(token, process.env.JWT_SECRET ? process.env.JWT_SECRET : 'super_strong_secret');
+    payload = jwt.verify(token, JWT_SECRET);
   } catch (err) {
     next(new NotAuthorized(notAuthorized));
   }
