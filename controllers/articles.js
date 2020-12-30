@@ -8,7 +8,7 @@ const { notFoundCard } = require('../utils/constants');
 const { canNotDeleteCard } = require('../utils/constants');
 const { notAuthorized } = require('../utils/constants');
 const { incorrectData } = require('../utils/constants');
-const { JWT_SECRET } = require('../utils/constants');
+const { SECRET } = require('../utils/constants');
 
 module.exports.getArticles = (req, res, next) => {
   Article.find({})
@@ -48,7 +48,7 @@ module.exports.deleteArticle = (req, res, next) => {
   const token = authorization.replace('Bearer ', '');
   let payload;
   try {
-    payload = jwt.verify(token, JWT_SECRET);
+    payload = jwt.verify(token, SECRET);
   } catch (err) {
     next(new NotAuthorized(notAuthorized));
   }

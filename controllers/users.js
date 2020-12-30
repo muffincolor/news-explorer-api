@@ -9,7 +9,7 @@ const { userAlreadyRegistered } = require('../utils/constants');
 const { dataIncorrect } = require('../utils/constants');
 const { notFoundUser } = require('../utils/constants');
 const { notAuthorized } = require('../utils/constants');
-const { JWT_SECRET } = require('../utils/constants');
+const { SECRET } = require('../utils/constants');
 
 module.exports.getUserInfo = (req, res, next) => {
   const { authorization } = req.headers;
@@ -17,7 +17,7 @@ module.exports.getUserInfo = (req, res, next) => {
   const token = authorization.replace('Bearer ', '');
   let payload;
   try {
-    payload = jwt.verify(token, JWT_SECRET);
+    payload = jwt.verify(token, SECRET);
   } catch (err) {
     next(new NotAuthorized(notAuthorized));
   }
@@ -41,7 +41,7 @@ module.exports.loginUser = (req, res, next) => {
         throw new NotAuthorized(dataIncorrect);
       }
 
-      const token = jwt.sign({ _id: user._id }, JWT_SECRET);
+      const token = jwt.sign({ _id: user._id }, SECRET);
       res.send({ token });
     })
     .catch(next);
@@ -53,6 +53,7 @@ module.exports.createUser = (req, res, next) => {
   } = req.body;
 
   if (validatorLib.contains(password, ' ')) {
+      console.log(dataIncorrect);
     throw new IncorrectData(dataIncorrect);
   }
 
