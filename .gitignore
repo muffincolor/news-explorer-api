@@ -1,0 +1,7 @@
+node_modules/
+.idea/
+error.log
+request.log
+vars.env
+NODE_ENV=production
+JWT_SECRET=super-strong-secret
