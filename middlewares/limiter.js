@@ -3,7 +3,7 @@ const { tooManyRequests } = require('../utils/constants');
 
 const limiter = rateLimit({
   windowMs: 2 * 60 * 1000,
-  max: 25,
+  max: 300,
   message: {
     message: tooManyRequests,
   },

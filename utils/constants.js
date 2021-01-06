@@ -6,7 +6,7 @@ const {
 
 const devSecret = 'dev-secret';
 const devDbLink = 'mongodb://localhost:27017/diploma';
-const devServerPort = 3000;
+const devServerPort = 4000;
 
 module.exports.SECRET = NODE_ENV === 'production' && JWT_SECRET ? JWT_SECRET : devSecret;
 module.exports.DB = NODE_ENV === 'production' && DATABASE_ADRESS ? DATABASE_ADRESS : devDbLink;
