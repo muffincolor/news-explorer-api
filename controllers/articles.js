@@ -11,7 +11,7 @@ const { incorrectData } = require('../utils/constants');
 const { SECRET } = require('../utils/constants');
 
 module.exports.getArticles = (req, res, next) => {
-  Article.find({})
+  Article.find({ owner: req.user._id })
     .then((cards) => {
       res.send(cards);
     })
